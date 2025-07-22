@@ -8,6 +8,16 @@
 			{
 				"inputs": [
 					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_symbol",
+						"type": "string"
+					},
+					{
 						"internalType": "uint256",
 						"name": "initialSupply",
 						"type": "uint256"
@@ -15,6 +25,31 @@
 				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Approval",
+				"type": "event"
 			},
 			{
 				"anonymous": false,
@@ -40,6 +75,54 @@
 				],
 				"name": "Transfer",
 				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "tokenOwner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					}
+				],
+				"name": "allowance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "approve",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
 			},
 			{
 				"inputs": [
@@ -71,6 +154,24 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "mint",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -152,7 +253,42 @@
 					}
 				],
 				"name": "transfer",
-				"outputs": [],
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "transferFrom",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			}
@@ -175,17 +311,29 @@
 		"userdoc": {
 			"kind": "user",
 			"methods": {
+				"allowance(address,address)": {
+					"notice": "Transfer tokens using allowance"
+				},
+				"approve(address,uint256)": {
+					"notice": "Transfer tokensApprove a spender"
+				},
 				"balanceOf(address)": {
 					"notice": "Check balance of a specific address"
+				},
+				"mint(address,uint256)": {
+					"notice": "Mint new tokens (only owner, capped)"
 				},
 				"name()": {
 					"notice": "Token details"
 				},
 				"totalsupply()": {
-					"notice": "Transfer tokensApprove a spenderTransfer tokens using allowanceGet max token capGet total token supply"
+					"notice": "Get max token capGet total token supply"
 				},
 				"transfer(address,uint256)": {
 					"notice": "Transfer tokens from sender to recipient"
+				},
+				"transferFrom(address,address,uint256)": {
+					"notice": "Transfer tokens on behalf of another address"
 				}
 			},
 			"version": 1
@@ -208,11 +356,11 @@
 	},
 	"sources": {
 		"Contract_Conqueror_Series/ERC20standards.sol": {
-			"keccak256": "0x45216e126fb131b77a2f54f00de77da59a1fb865b3da679e15a0c56ce98365c7",
+			"keccak256": "0x650b7568e5320baf9aa8be0e1a56ad5d5a2810e514515e9f44920eb930d581f8",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a8c3ba734c4d961dddb8a2dc84bdbb000ca5e740e622251fe18a2c25b80b5e5c",
-				"dweb:/ipfs/QmYN7jZEBVNE8FzfQJRtyFYd7PK8R8mDNdHWJC2Bojo4mR"
+				"bzz-raw://6c9cf75befd158506986d10ece80349585d115db79cfb3508322c5dc2a6dee12",
+				"dweb:/ipfs/QmV1K8QkiuEXeeuBc3DQMRhbmL6xSvNpivhdJFuJ1qArik"
 			]
 		}
 	},
