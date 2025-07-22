@@ -57,10 +57,12 @@ contract BasicToken {
     constructor(
         string memory _name,
         string memory _symbol,
-        uint256 initialSupply){
+        uint256 initialSupply,
+        uint maxcap){
         name = _name;
         symbol = _symbol;    
         owner = msg.sender;
+        _cap = maxcap * (10 ** uint256(decimals));
         _mint(owner,initialSupply * (10 ** uint256(decimals)));
     }
 
@@ -98,7 +100,13 @@ contract BasicToken {
 
     /// @notice Mint new tokens (only owner, capped)
     function mint(address to, uint256 amount) external onlyowner whenNotPaused{
+        uint256 amountWithDecimals = amount * (10 ** uint256(decimals));
+        require(_totalsupply + amountWithDecimals <= _cap, "Exceeds cap");
         _mint(to, amount*(10 ** uint256(decimals)));
+    }
+
+      function cap() external view returns (uint256) {
+        return _cap;
     }
     /// @param to The address to receive minted tokens
     /// @param amount The amount to mint (in whole tokens)

@@ -21,6 +21,11 @@
 						"internalType": "uint256",
 						"name": "initialSupply",
 						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "maxcap",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -236,6 +241,19 @@
 				"name": "burnForm",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "cap",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -488,11 +506,11 @@
 	},
 	"sources": {
 		"Contract_Conqueror_Series/ERC20standards.sol": {
-			"keccak256": "0x2bb56756b5f3c5502620f25789d95924a2dea68c184c42f621182291464a91d3",
+			"keccak256": "0xb7110837665ea1451eb4753ed9d1f87db6f2d84de6ed3cccad0ad987cb5a12d4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://1fc3f653e6b6f56008c5b94baa259de1d01a102d3d135ddc329eed719caed0d3",
-				"dweb:/ipfs/QmX8FAGkuftoGpqDda3pWLxbbRsMsw8zqRZNTNyS3S7vVJ"
+				"bzz-raw://897cf1006a2e4007b7764d7e12c8c42ead575a75ee056877dfb0a6474a9d7077",
+				"dweb:/ipfs/QmfUE3kgzMekjANeoeL9XHewQd2qdy55iYZe4R97hCQEe3"
 			]
 		}
 	},
