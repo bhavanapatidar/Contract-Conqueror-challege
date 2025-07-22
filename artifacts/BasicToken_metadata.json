@@ -81,6 +81,25 @@
 					{
 						"indexed": true,
 						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "unlockTime",
+						"type": "uint256"
+					}
+				],
+				"name": "Locked",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
 						"name": "to",
 						"type": "address"
 					},
@@ -270,6 +289,56 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "getCurrentTimestamp",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					}
+				],
+				"name": "getUnlockTime",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "unlockTime",
+						"type": "uint256"
+					}
+				],
+				"name": "lockTokens",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -434,8 +503,11 @@
 						"amount": "Amount to burn (in smallest unit)"
 					}
 				},
-				"constructor": {
-					"details": "Restrict function if address is time-locked"
+				"lockTokens(address,uint256)": {
+					"params": {
+						"unlockTime": "The UNIX timestamp until which the address is locked     🕒 Lock a user's tokens until a future timestamp",
+						"user": "The address to lock"
+					}
 				}
 			},
 			"stateVariables": {
@@ -463,6 +535,12 @@
 				},
 				"burnForm(address,uint256)": {
 					"notice": "Burn tokens from another account with approval"
+				},
+				"getCurrentTimestamp()": {
+					"notice": "Get the current block timestamp (in seconds since Unix epoch)"
+				},
+				"getUnlockTime(address)": {
+					"notice": "Get the unlock timestamp for a user"
 				},
 				"mint(address,uint256)": {
 					"notice": "Mint new tokens (only owner, capped)"
@@ -506,11 +584,11 @@
 	},
 	"sources": {
 		"Contract_Conqueror_Series/ERC20standards.sol": {
-			"keccak256": "0xb7110837665ea1451eb4753ed9d1f87db6f2d84de6ed3cccad0ad987cb5a12d4",
+			"keccak256": "0xd9ce75283407ec37873fa63af67857db9e3429e0c123f1e2764239753a70a4b4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://897cf1006a2e4007b7764d7e12c8c42ead575a75ee056877dfb0a6474a9d7077",
-				"dweb:/ipfs/QmfUE3kgzMekjANeoeL9XHewQd2qdy55iYZe4R97hCQEe3"
+				"bzz-raw://e55a2f9e9ddd3cc8a39b7d5772546259251028e179141492e5bc64a74d9733d9",
+				"dweb:/ipfs/QmXiAs3x5enAxDuAU9QPajbVyBj9ar87bNmwyVrFSz5etC"
 			]
 		}
 	},

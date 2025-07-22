@@ -18,12 +18,16 @@ contract BasicToken {
     /// @dev Balances and allowances
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
+    mapping(address => uint256) private _lockUntil; // timestamp
+
     event Transfer(address indexed from, address indexed to, uint256 amount);
     event Approval(address indexed owner, address indexed spender, uint256 amount);
     event Burn(address indexed burner, uint256 amount);
     event Paused(address indexed account);
     event Unpaused(address indexed account);
     event Mint(address indexed to, uint256 amount);
+    event Locked(address indexed user, uint256 unlockTime);
+
 
         /// @dev Restrict function to only the owner
 
@@ -40,20 +44,11 @@ contract BasicToken {
     }    
 
     // @dev Timestamp when each account's tokens unlock
-
-    /// @notice Events for tracking state changes
-
-    /// @notice Events for tracking state changes
-
-
-
-    /// @dev Restrict function if address is time-locked
-
+     modifier notLocked(address user) {
+        require(block.timestamp >= _lockUntil[user], "Tokens are time-locked");
+        _;
+    }
     // / @notice Constructor to initialize name, symbol, cap, and initial supply
-    // / @param _name Token name
-    // / @param _symbol Token symbol
-    // / @param initialSupply Initial mint amount (in whole tokens)
-    // / @param maxCap Maximum supply cap (in whole tokens)
     constructor(
         string memory _name,
         string memory _symbol,
@@ -67,7 +62,7 @@ contract BasicToken {
     }
 
     /// @notice Transfer tokens from sender to recipient
-      function transfer(address to, uint256 amount) external whenNotPaused returns (bool) {
+      function transfer(address to, uint256 amount) external whenNotPaused notLocked(msg.sender) returns (bool) {
         _transfer(msg.sender, to, amount);
         return true;
     }
@@ -93,10 +88,28 @@ contract BasicToken {
     }
 
     /// @notice Lock an address's tokens until a future time
+
     /// @param user The address to lock
     /// @param unlockTime The UNIX timestamp until which the address is locked    
+ /// 🕒 Lock a user's tokens until a future timestamp
+    function lockTokens(address user, uint256 unlockTime) external onlyowner {
+        uint256 currentTime = block.timestamp + unlockTime;
+        require(currentTime > block.timestamp, "Unlock time must be in future");
+        _lockUntil[user] = currentTime;
+        emit Locked(user, currentTime);
+    }
 
+    /// @notice Get the current block timestamp (in seconds since Unix epoch)
+function getCurrentTimestamp() external view returns (uint256) {
+    return block.timestamp;
+}
+
+
+   
     /// @notice Get the unlock timestamp for a user
+     function getUnlockTime(address user) external view returns (uint256) {
+        return _lockUntil[user];
+    }
 
     /// @notice Mint new tokens (only owner, capped)
     function mint(address to, uint256 amount) external onlyowner whenNotPaused{
