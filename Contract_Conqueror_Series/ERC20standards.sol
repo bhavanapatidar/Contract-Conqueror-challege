@@ -20,6 +20,7 @@ contract BasicToken {
     mapping(address => mapping(address => uint256)) private _allowances;
     event Transfer(address indexed from, address indexed to, uint256 amount);
     event Approval(address indexed owner, address indexed spender, uint256 amount);
+    event Burn(address indexed burner, uint256 amount);
     modifier onlyowner(){
         require(msg.sender == owner,"Not contract Owner");
         _; 
@@ -85,10 +86,20 @@ contract BasicToken {
 
     /// @notice Burn tokens from caller's balance
     /// @param amount Amount to burn (in smallest unit)
+    function burn(uint256 amount) external{
+        require(_balances[msg.sender] >= amount, "Insufficient balance to burn");
+        _burn(msg.sender, amount);
+    }
 
     /// @notice Burn tokens from another account with approval
     /// @param account Address to burn from
     /// @param amount Amount to burn (in smallest unit)
+    function burnForm(address account, uint256 amount) external {
+        require(_allowances[account][msg.sender] >= amount, "Allowance exceeded");
+        _allowances[account][msg.sender] -= amount;
+        _burn(account, amount);
+
+    }
     
     /// @notice Transfer tokens on behalf of another address
     function transferFrom(address from, address to, uint256 amount) external returns (bool) {
@@ -125,6 +136,14 @@ contract BasicToken {
         emit Transfer(address(0), to, amount);
     }
     /// @dev Internal burn function
+    function _burn(address from, uint256 amount) internal{
+        require(from != address(0), "Invalid address");
+        require(_balances[from] >= amount, "ERC20: insufficient balance");
+        _balances[from] -= amount;
+        _totalsupply -= amount;
+        emit Burn(from, amount);
+        emit Transfer(from, address(0),amount);
+    }
     /// @dev Internal transfer function
      function _transfer(address from, address to, uint256 amount) internal {
         require(from != address(0), "ERC20: transfer from 0x0");

@@ -57,6 +57,25 @@
 					{
 						"indexed": true,
 						"internalType": "address",
+						"name": "burner",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Burn",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
 						"name": "from",
 						"type": "address"
 					},
@@ -141,6 +160,37 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "burn",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "burnForm",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -296,6 +346,17 @@
 		"devdoc": {
 			"kind": "dev",
 			"methods": {
+				"burn(uint256)": {
+					"params": {
+						"amount": "Amount to burn (in smallest unit)"
+					}
+				},
+				"burnForm(address,uint256)": {
+					"params": {
+						"account": "Address to burn from",
+						"amount": "Amount to burn (in smallest unit)"
+					}
+				},
 				"constructor": {
 					"details": "Restrict function if address is time-locked"
 				}
@@ -319,6 +380,12 @@
 				},
 				"balanceOf(address)": {
 					"notice": "Check balance of a specific address"
+				},
+				"burn(uint256)": {
+					"notice": "Burn tokens from caller's balance"
+				},
+				"burnForm(address,uint256)": {
+					"notice": "Burn tokens from another account with approval"
 				},
 				"mint(address,uint256)": {
 					"notice": "Mint new tokens (only owner, capped)"
@@ -356,11 +423,11 @@
 	},
 	"sources": {
 		"Contract_Conqueror_Series/ERC20standards.sol": {
-			"keccak256": "0x650b7568e5320baf9aa8be0e1a56ad5d5a2810e514515e9f44920eb930d581f8",
+			"keccak256": "0x7d39890654c471a8e59782fb6a842a3541ef06c1c08c0152e2d29bda058fc65a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6c9cf75befd158506986d10ece80349585d115db79cfb3508322c5dc2a6dee12",
-				"dweb:/ipfs/QmV1K8QkiuEXeeuBc3DQMRhbmL6xSvNpivhdJFuJ1qArik"
+				"bzz-raw://a217f449cc2fb4519100b12e9f2d76506128b14607e738cbbe248bc2962d3a0b",
+				"dweb:/ipfs/QmUmgC3ZtFpDmUgk9XMR7pfA9iqYPiMLjo3Spx9gs6kuEn"
 			]
 		}
 	},
