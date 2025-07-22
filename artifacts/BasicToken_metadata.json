@@ -76,6 +76,38 @@
 					{
 						"indexed": true,
 						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Mint",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "Paused",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
 						"name": "from",
 						"type": "address"
 					},
@@ -93,6 +125,19 @@
 					}
 				],
 				"name": "Transfer",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "Unpaused",
 				"type": "event"
 			},
 			{
@@ -252,6 +297,13 @@
 			},
 			{
 				"inputs": [],
+				"name": "pause",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "paused",
 				"outputs": [
 					{
@@ -341,6 +393,13 @@
 				],
 				"stateMutability": "nonpayable",
 				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "unpause",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -393,6 +452,9 @@
 				"name()": {
 					"notice": "Token details"
 				},
+				"pause()": {
+					"notice": "Pause token transfers and actions"
+				},
 				"totalsupply()": {
 					"notice": "Get max token capGet total token supply"
 				},
@@ -401,6 +463,9 @@
 				},
 				"transferFrom(address,address,uint256)": {
 					"notice": "Transfer tokens on behalf of another address"
+				},
+				"unpause()": {
+					"notice": "Unpause token transfers and actions"
 				}
 			},
 			"version": 1
@@ -423,11 +488,11 @@
 	},
 	"sources": {
 		"Contract_Conqueror_Series/ERC20standards.sol": {
-			"keccak256": "0x7d39890654c471a8e59782fb6a842a3541ef06c1c08c0152e2d29bda058fc65a",
+			"keccak256": "0x2bb56756b5f3c5502620f25789d95924a2dea68c184c42f621182291464a91d3",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a217f449cc2fb4519100b12e9f2d76506128b14607e738cbbe248bc2962d3a0b",
-				"dweb:/ipfs/QmUmgC3ZtFpDmUgk9XMR7pfA9iqYPiMLjo3Spx9gs6kuEn"
+				"bzz-raw://1fc3f653e6b6f56008c5b94baa259de1d01a102d3d135ddc329eed719caed0d3",
+				"dweb:/ipfs/QmX8FAGkuftoGpqDda3pWLxbbRsMsw8zqRZNTNyS3S7vVJ"
 			]
 		}
 	},

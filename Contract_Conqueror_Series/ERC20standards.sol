@@ -21,9 +21,22 @@ contract BasicToken {
     event Transfer(address indexed from, address indexed to, uint256 amount);
     event Approval(address indexed owner, address indexed spender, uint256 amount);
     event Burn(address indexed burner, uint256 amount);
+    event Paused(address indexed account);
+    event Unpaused(address indexed account);
+    event Mint(address indexed to, uint256 amount);
+
+        /// @dev Restrict function to only the owner
+
     modifier onlyowner(){
         require(msg.sender == owner,"Not contract Owner");
         _; 
+    }
+
+        /// @dev Restrict function if contract is paused
+
+    modifier whenNotPaused(){
+        require(!paused,"Contract is paused");
+        _;
     }    
 
     // @dev Timestamp when each account's tokens unlock
@@ -32,9 +45,7 @@ contract BasicToken {
 
     /// @notice Events for tracking state changes
 
-    /// @dev Restrict function to only the owner
 
-    /// @dev Restrict function if contract is paused
 
     /// @dev Restrict function if address is time-locked
 
@@ -54,7 +65,7 @@ contract BasicToken {
     }
 
     /// @notice Transfer tokens from sender to recipient
-      function transfer(address to, uint256 amount) external returns (bool) {
+      function transfer(address to, uint256 amount) external whenNotPaused returns (bool) {
         _transfer(msg.sender, to, amount);
         return true;
     }
@@ -67,8 +78,17 @@ contract BasicToken {
 
 
      /// @notice Pause token transfers and actions
+     function pause() external onlyowner{
+        paused = true;
+        emit Paused(msg.sender);
+     }
 
     /// @notice Unpause token transfers and actions
+    function unpause() external onlyowner{
+        paused = false;
+        emit Unpaused(msg.sender);
+
+    }
 
     /// @notice Lock an address's tokens until a future time
     /// @param user The address to lock
@@ -77,7 +97,7 @@ contract BasicToken {
     /// @notice Get the unlock timestamp for a user
 
     /// @notice Mint new tokens (only owner, capped)
-    function mint(address to, uint256 amount) external onlyowner{
+    function mint(address to, uint256 amount) external onlyowner whenNotPaused{
         _mint(to, amount*(10 ** uint256(decimals)));
     }
     /// @param to The address to receive minted tokens
@@ -86,7 +106,7 @@ contract BasicToken {
 
     /// @notice Burn tokens from caller's balance
     /// @param amount Amount to burn (in smallest unit)
-    function burn(uint256 amount) external{
+    function burn(uint256 amount) external whenNotPaused{
         require(_balances[msg.sender] >= amount, "Insufficient balance to burn");
         _burn(msg.sender, amount);
     }
@@ -94,7 +114,7 @@ contract BasicToken {
     /// @notice Burn tokens from another account with approval
     /// @param account Address to burn from
     /// @param amount Amount to burn (in smallest unit)
-    function burnForm(address account, uint256 amount) external {
+    function burnForm(address account, uint256 amount) external whenNotPaused{
         require(_allowances[account][msg.sender] >= amount, "Allowance exceeded");
         _allowances[account][msg.sender] -= amount;
         _burn(account, amount);
@@ -102,7 +122,7 @@ contract BasicToken {
     }
     
     /// @notice Transfer tokens on behalf of another address
-    function transferFrom(address from, address to, uint256 amount) external returns (bool) {
+    function transferFrom(address from, address to, uint256 amount) external whenNotPaused returns (bool) {
         require(_allowances[from][msg.sender] >= amount, "ERC20: insufficient allowance");
 
         _allowances[from][msg.sender] -= amount;
@@ -113,12 +133,12 @@ contract BasicToken {
 
     /// @notice Transfer tokens
     /// @notice Approve a spender
-     function approve(address spender, uint256 amount) external returns (bool) {
+     function approve(address spender, uint256 amount) external whenNotPaused returns (bool) {
         _approve(msg.sender, spender, amount);
         return true;
     }
     /// @notice Transfer tokens using allowance
-     function allowance(address tokenOwner, address spender) external view returns (uint256) {
+     function allowance(address tokenOwner, address spender) external view whenNotPaused returns (uint256) {
         return _allowances[tokenOwner][spender];
     }
     /// @notice Get max token cap
@@ -133,6 +153,7 @@ contract BasicToken {
         require(to != address(0), "Invalid address");
         _totalsupply += amount;
         _balances[to] += amount;
+        emit Mint(to, amount);
         emit Transfer(address(0), to, amount);
     }
     /// @dev Internal burn function
