@@ -1,159 +1,58 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-/// @title UnifiedTokenSwap
-/// @notice Combines TokenA, TokenB, and Swap functionality in one contract
+interface IERC20 {
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
+    function transfer(address to, uint256 amount) external returns (bool);
+    function balanceOf(address account) external view returns (uint256);
+    function approve(address spender, uint256 amount) external returns (bool);
+}
 
-contract UnifiedTokenSwap {
-    // ========== Token Structures ==========
-    struct Token {
-        string name;
-        string symbol;
-        uint8 decimals;
-        uint256 totalSupply;
-        mapping(address => uint256) balanceOf;
-        mapping(address => mapping(address => uint256)) allowance;
-    }
-
-    Token private tokenA;
-    Token private tokenB;
-
-    // ========== Admin and Swap Variables ==========
+contract SimpleSwap {
     address public owner;
-    uint256 public exchangeRate; // tokenB per tokenA, scaled by 1e18
+    IERC20 public tokenA;
+    IERC20 public tokenB;
+    uint256 public rate; // number of TokenB per TokenA, e.g., rate=2 means 1 A = 2 B
 
-    // ========== Events ==========
-    event Transfer(address indexed token, address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed token, address indexed owner, address indexed spender, uint256 value);
-    event ExchangeRateUpdated(uint256 newRate);
-    event SwapExecuted(address indexed user, uint256 amountIn, uint256 amountOut);
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    event Swap(address indexed user, uint256 amountA, uint256 amountB);
+    event RateUpdated(uint256 oldRate, uint256 newRate);
+    event WithdrawTokens(address indexed token, address indexed to, uint256 amount);
 
-    // ========== Modifiers ==========
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
         _;
     }
 
-    // ========== Constructor ==========
-    constructor(uint256 _initialRate) {
-        require(_initialRate > 0, "Invalid rate");
-
+    constructor(address _tokenA, address _tokenB, uint256 _rate) {
         owner = msg.sender;
-        emit OwnershipTransferred(address(0), msg.sender);
-
-        // Initialize tokens
-        tokenA.name = "TokenA";
-        tokenA.symbol = "TKA";
-        tokenA.decimals = 18;
-
-        tokenB.name = "TokenB";
-        tokenB.symbol = "TKB";
-        tokenB.decimals = 18;
-
-        exchangeRate = _initialRate;
-        emit ExchangeRateUpdated(_initialRate);
+        tokenA = IERC20(_tokenA);
+        tokenB = IERC20(_tokenB);
+        rate = _rate; // e.g., 2 means get 2 B for every 1 A
     }
 
-    // ========== Token Logic ==========
-    function name(bool isTokenA) external view returns (string memory) {
-        return isTokenA ? tokenA.name : tokenB.name;
+    function updateRate(uint256 _newRate) external onlyOwner {
+        require(_newRate > 0, "Rate must be positive");
+        emit RateUpdated(rate, _newRate);
+        rate = _newRate;
     }
 
-    function symbol(bool isTokenA) external view returns (string memory) {
-        return isTokenA ? tokenA.symbol : tokenB.symbol;
+    /// @notice Swap specified amount of TokenA to TokenB according to rate
+    function swapAToB(uint256 amountA) external {
+        require(amountA > 0, "Amount must be positive");
+        uint256 amountB = amountA * rate;
+        require(tokenB.balanceOf(address(this)) >= amountB, "Insufficient TokenB in contract");
+
+        // Pull user's TokenA
+        require(tokenA.transferFrom(msg.sender, address(this), amountA), "TokenA transfer failed");
+        // Send TokenB to user
+        require(tokenB.transfer(msg.sender, amountB), "TokenB transfer failed");
+
+        emit Swap(msg.sender, amountA, amountB);
     }
 
-    function decimals(bool isTokenA) external view returns (uint8) {
-        return isTokenA ? tokenA.decimals : tokenB.decimals;
-    }
-
-    function totalSupply(bool isTokenA) external view returns (uint256) {
-        return isTokenA ? tokenA.totalSupply : tokenB.totalSupply;
-    }
-
-    function balanceOf(bool isTokenA, address user) external view returns (uint256) {
-        return isTokenA ? tokenA.balanceOf[user] : tokenB.balanceOf[user];
-    }
-
-    function approve(bool isTokenA, address spender, uint256 amount) external returns (bool) {
-        Token storage token = isTokenA ? tokenA : tokenB;
-        token.allowance[msg.sender][spender] = amount;
-        emit Approval(isTokenA ? address(this) : address(0), msg.sender, spender, amount);
-        return true;
-    }
-
-    function allowance(bool isTokenA, address owner_, address spender) external view returns (uint256) {
-        Token storage token = isTokenA ? tokenA : tokenB;
-        return token.allowance[owner_][spender];
-    }
-
-    function transfer(bool isTokenA, address to, uint256 amount) external returns (bool) {
-        Token storage token = isTokenA ? tokenA : tokenB;
-        require(token.balanceOf[msg.sender] >= amount, "Insufficient balance");
-        token.balanceOf[msg.sender] -= amount;
-        token.balanceOf[to] += amount;
-        emit Transfer(isTokenA ? address(this) : address(0), msg.sender, to, amount);
-        return true;
-    }
-
-    function transferFrom(bool isTokenA, address from, address to, uint256 amount) external returns (bool) {
-        Token storage token = isTokenA ? tokenA : tokenB;
-        require(token.balanceOf[from] >= amount, "Insufficient balance");
-        require(token.allowance[from][msg.sender] >= amount, "Not allowed");
-        token.allowance[from][msg.sender] -= amount;
-        token.balanceOf[from] -= amount;
-        token.balanceOf[to] += amount;
-        emit Transfer(isTokenA ? address(this) : address(0), from, to, amount);
-        return true;
-    }
-
-    function mint(bool isTokenA, address to, uint256 amount) external onlyOwner {
-        Token storage token = isTokenA ? tokenA : tokenB;
-        token.balanceOf[to] += amount;
-        token.totalSupply += amount;
-        emit Transfer(isTokenA ? address(this) : address(0), address(0), to, amount);
-    }
-
-    // ========== Swap Logic ==========
-    function setExchangeRate(uint256 newRate) external onlyOwner {
-        require(newRate > 0, "Zero rate");
-        exchangeRate = newRate;
-        emit ExchangeRateUpdated(newRate);
-    }
-
-    function swap(uint256 amountIn) external {
-        require(amountIn > 0, "Zero input");
-
-        // Check allowance and balance
-        require(tokenA.balanceOf[msg.sender] >= amountIn, "Insufficient TokenA");
-        require(tokenA.allowance[msg.sender][address(this)] >= amountIn, "TokenA not approved");
-
-        uint256 amountOut = (amountIn * exchangeRate) / 1e18;
-        require(tokenB.balanceOf[address(this)] >= amountOut, "Insufficient TokenB in contract");
-
-        // Execute swap
-        tokenA.balanceOf[msg.sender] -= amountIn;
-        tokenA.allowance[msg.sender][address(this)] -= amountIn;
-        tokenA.balanceOf[address(this)] += amountIn;
-
-        tokenB.balanceOf[address(this)] -= amountOut;
-        tokenB.balanceOf[msg.sender] += amountOut;
-
-        emit SwapExecuted(msg.sender, amountIn, amountOut);
-    }
-
-    // ========== Admin ==========
-    function transferOwnership(address newOwner) external onlyOwner {
-        require(newOwner != address(0), "Zero address");
-        emit OwnershipTransferred(owner, newOwner);
-        owner = newOwner;
-    }
-
-    function withdraw(bool isTokenA, uint256 amount) external onlyOwner {
-        Token storage token = isTokenA ? tokenA : tokenB;
-        require(token.balanceOf[address(this)] >= amount, "Insufficient funds");
-        token.balanceOf[address(this)] -= amount;
-        token.balanceOf[msg.sender] += amount;
+    /// @notice Owner can withdraw any ERC20 tokens from the contract
+    function withdrawTokens(address token, address to, uint256 amount) external onlyOwner {
+        IERC20(token).transfer(to, amount);
+        emit WithdrawTokens(token, to, amount);
     }
 }

@@ -139,12 +139,12 @@
 				"inputs": [
 					{
 						"internalType": "bool",
-						"name": "isTokenA",
+						"name": "isA",
 						"type": "bool"
 					},
 					{
 						"internalType": "address",
-						"name": "owner_",
+						"name": "ownerAddr",
 						"type": "address"
 					},
 					{
@@ -167,10 +167,53 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bool",
-						"name": "isTokenA",
-						"type": "bool"
+						"internalType": "address",
+						"name": "",
+						"type": "address"
 					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "allowanceA",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "allowanceB",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
 					{
 						"internalType": "address",
 						"name": "spender",
@@ -182,7 +225,31 @@
 						"type": "uint256"
 					}
 				],
-				"name": "approve",
+				"name": "approveA",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "approveB",
 				"outputs": [
 					{
 						"internalType": "bool",
@@ -197,7 +264,7 @@
 				"inputs": [
 					{
 						"internalType": "bool",
-						"name": "isTokenA",
+						"name": "isA",
 						"type": "bool"
 					},
 					{
@@ -220,12 +287,57 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bool",
-						"name": "isTokenA",
-						"type": "bool"
+						"internalType": "address",
+						"name": "",
+						"type": "address"
 					}
 				],
-				"name": "decimals",
+				"name": "balanceOfA",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "balanceOfB",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "decimalsA",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "decimalsB",
 				"outputs": [
 					{
 						"internalType": "uint8",
@@ -253,7 +365,7 @@
 				"inputs": [
 					{
 						"internalType": "bool",
-						"name": "isTokenA",
+						"name": "isA",
 						"type": "bool"
 					},
 					{
@@ -273,14 +385,21 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
+				"inputs": [],
+				"name": "nameA",
+				"outputs": [
 					{
-						"internalType": "bool",
-						"name": "isTokenA",
-						"type": "bool"
+						"internalType": "string",
+						"name": "",
+						"type": "string"
 					}
 				],
-				"name": "name",
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "nameB",
 				"outputs": [
 					{
 						"internalType": "string",
@@ -331,14 +450,21 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
+				"inputs": [],
+				"name": "symbolA",
+				"outputs": [
 					{
-						"internalType": "bool",
-						"name": "isTokenA",
-						"type": "bool"
+						"internalType": "string",
+						"name": "",
+						"type": "string"
 					}
 				],
-				"name": "symbol",
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "symbolB",
 				"outputs": [
 					{
 						"internalType": "string",
@@ -353,7 +479,36 @@
 				"inputs": [
 					{
 						"internalType": "bool",
-						"name": "isTokenA",
+						"name": "isA",
+						"type": "bool"
+					}
+				],
+				"name": "tokenInfo",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					},
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bool",
+						"name": "isA",
 						"type": "bool"
 					}
 				],
@@ -369,10 +524,36 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "totalSupplyA",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "totalSupplyB",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "bool",
-						"name": "isTokenA",
+						"name": "isA",
 						"type": "bool"
 					},
 					{
@@ -401,7 +582,7 @@
 				"inputs": [
 					{
 						"internalType": "bool",
-						"name": "isTokenA",
+						"name": "isA",
 						"type": "bool"
 					},
 					{
@@ -448,7 +629,7 @@
 				"inputs": [
 					{
 						"internalType": "bool",
-						"name": "isTokenA",
+						"name": "isA",
 						"type": "bool"
 					},
 					{
@@ -466,13 +647,11 @@
 		"devdoc": {
 			"kind": "dev",
 			"methods": {},
-			"title": "UnifiedTokenSwap",
 			"version": 1
 		},
 		"userdoc": {
 			"kind": "user",
 			"methods": {},
-			"notice": "Combines TokenA, TokenB, and Swap functionality in one contract",
 			"version": 1
 		}
 	},
@@ -493,11 +672,11 @@
 	},
 	"sources": {
 		"Contract_Conqueror_Series/simpleSwap.sol": {
-			"keccak256": "0x523c26b3afd06f167d7ca7e2ec4b981dd54afbe8e85cbf49a305d71deddee721",
+			"keccak256": "0x859f3ff0050454e0dc6f0065869e507a72ac2f17c27b93723cd76535841a0bdc",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://13852b087250d5100a482cb357d50cda5b601f6507b3b6cae2f1688c448db20c",
-				"dweb:/ipfs/QmS6iVepVFP4zGw6sM52bPMx7KMy6o8GmpF7cQZr3Lde4t"
+				"bzz-raw://dfd09df1e18b593f56436e9ee50c807d8f7fe68ac176ada49e200cb64c853ce5",
+				"dweb:/ipfs/QmNMRtpLL2okmcj4g5NDEfhw1DPUZbM8dgmZjgbv2iFtRG"
 			]
 		}
 	},
