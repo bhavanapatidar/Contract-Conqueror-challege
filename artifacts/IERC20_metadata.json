@@ -9,35 +9,24 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "spender",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "approve",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
 						"name": "account",
 						"type": "address"
 					}
 				],
 				"name": "balanceOf",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "totalSupply",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -115,7 +104,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Contract_Conqueror_Series/simpleSwap.sol": "IERC20"
+			"Contract_Conqueror_Series/StakingRewards.sol": "IERC20"
 		},
 		"evmVersion": "prague",
 		"libraries": {},
@@ -129,12 +118,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"Contract_Conqueror_Series/simpleSwap.sol": {
-			"keccak256": "0xe2c9116feaa07b114e47be98ea3c0b2ac5fe74c58b0e081e66aceddabbf4ae02",
+		"Contract_Conqueror_Series/StakingRewards.sol": {
+			"keccak256": "0xfef2c4460f8cbd7165264e59a6a0b5bd4e02e2c52602833d66ae60108dce7b8c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://da8592c82174b44906bf623484cc90d2db5a029ef6b999b16e743544da70fa94",
-				"dweb:/ipfs/Qmaj2USniNEoTwSQiigYacQi7vXiB4GCRn3e5STiCd2h3a"
+				"bzz-raw://0e139d8a0a134318e41fbffd721c9d7907c2ad9c90f394bdc5741d827764c976",
+				"dweb:/ipfs/QmaV42uLPuK6MBsfD6hsg3sn1wC3TinBkYaptLgD9snXr6"
 			]
 		}
 	},
